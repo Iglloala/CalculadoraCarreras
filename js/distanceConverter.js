@@ -3,21 +3,21 @@ var Calculator = (function(objeto){
 	
 	// kmToMeters
 	objeto.kmToMeters = function(km){
-		return km * 100;
+		return parseFloat((km*1000));
 	}
 	// metersToKm
 	objeto.metersToKm = function(meters){
-		return meters / 100;
+		return parseFloat((meters/100));
 	}
 	
 	// metersToMiles
 	objeto.metersToMiles = function(meters){
-		return meters/1609.344;
+		return parseFloat((meters*0.000621371));
 	}
 
 	// milesToMeters
 	objeto.milesToMeters = function(miles) {
-		return miles*1609.344;
+		return parseFloat((miles*1609.344));
 	}
 
 	// milesToImperial
@@ -27,7 +27,7 @@ var Calculator = (function(objeto){
 		var resto = totalPies%5280;
 		var convertedYards = Math.floor(resto/3);
 		resto = resto%3;
-		var convertedFeets = parseFloat(resto.toFixed(2));
+		var convertedFeets = parseFloat(resto);
 		var imperial = new objeto.Imperial(convertedMiles, convertedYards, convertedFeets);
 		return imperial;
 	}
@@ -39,10 +39,21 @@ var Calculator = (function(objeto){
 		var resto = totalPies%5280;
 		var convertedYards = Math.floor(resto/3);
 		resto = resto%3;
-		var convertedFeets = parseFloat(resto.toFixed(2));
+		var convertedFeets = parseFloat(resto);
 		var imperial = new objeto.Imperial(convertedMiles, convertedYards, convertedFeets);
 		return imperial;	
 	}
+
+	// imperialToMiles
+	objeto.imperialToMiles = function(imperial){
+		var total = 0;
+		total += imperial.miles;
+		total += imperial.yards/1760;
+		total += imperial.feet/5280;
+		return parseFloat(total);
+	}
+
+	// 
 
 	// Devuelve objeto con los nuevos métodos que aporta el submódulo
 	return objeto;

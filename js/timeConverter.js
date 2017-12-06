@@ -16,7 +16,7 @@ var Calculator = (function(objeto){
 		var resto = seconds%3600;
 		var convertedMinutes = Math.floor(resto/60);
 		resto = resto%60;
-		var convertedSeconds = resto;
+		var convertedSeconds = parseFloat(resto).toFixed(2);
 		var time = new objeto.Time(convertedHours, convertedMinutes, convertedSeconds);
 		return time;
 	}
