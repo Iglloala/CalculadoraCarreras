@@ -5,7 +5,7 @@ var Calculator = (function(objeto){
 		var total = 0;
 		total += tiempo.hours * 3600;
 		total += tiempo.minutes * 60;
-		total += tiempo.seconds;
+		total += tiempo.seconds *1;
 		
 		return total;
 	}
@@ -16,7 +16,7 @@ var Calculator = (function(objeto){
 		var resto = seconds%3600;
 		var convertedMinutes = Math.floor(resto/60);
 		resto = resto%60;
-		var convertedSeconds = parseFloat(resto).toFixed(2);
+		var convertedSeconds = parseFloat(resto.toFixed(2));
 		var time = new objeto.Time(convertedHours, convertedMinutes, convertedSeconds);
 		return time;
 	}

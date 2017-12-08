@@ -31,6 +31,15 @@ var Calculator = (function(objeto){
 	}
 
 	// Método que calcula el "pace" a partir de un tiempo en segundos y una distancia en km devolviendo el resultado en km y en millas
+	/**
+	* [paceInKm calcula el ritmo de carrera por kilometro y milla a
+	partir del tiempo en segundos realizado y la distancia recorrida en
+	kilometros]
+	* @param {number} timeInSeconds
+	* @param {number} distanceInKm
+	* @return {[time,time]} [devuelve un array con el ritmo por
+	kilometro y ritmo por milla]
+	*/
 	objeto.paceInKm = function(timeInSeconds, distanceInKm){
 		// Calculo el pace en km
 		var tiempoEnMinutos = parseFloat(timeInSeconds/60);
@@ -48,6 +57,15 @@ var Calculator = (function(objeto){
 	}
 
 	// Método que calcula el ritmo a partir de un tiempo en segundos y una distancia en millas devolviendo el resultado en km y millas
+	/**
+	* [paceInMiles calcula el ritmo de carrera por kilometro y milla a
+	partir del tiempo en segundos realizado y la distancia recorrida en
+	millas]
+	* @param {number} timeInSeconds
+	* @param {number} distanceInMiles
+	* @return {[time,time]} [devuelve un array con el ritmo por
+	kilometro y ritmo por milla]
+	*/
 	objeto.paceInMiles = function(timeInSeconds, distanceInMiles){
 		// Calculo el pace en millas
 		var tiempoEnMinutos	= parseFloat(timeInSeconds/60);
@@ -63,6 +81,110 @@ var Calculator = (function(objeto){
 		// Y retorno los dos Time con el resultado
 		return [timePaceKm, timePaceMiles];
 	}
+
+	// Método para calcular la marca en kilómetros
+	/**
+	* [markFromPacePerKm: calcula la marca esperada al recorrer la
+	distancia en kilometros al ritmo de carrera por kilometro realizado]
+	* @param {time} pacePerKm
+	* @param {number} distanceInMeters
+	* @return {time} [devuelve el tiempo/marca esperado]
+	*/
+	objeto.markFromPacePerKm = function(pacePerKm, distanceInMeters) {
+		var distanciaEnKm = this.metersToKm(distanceInMeters);
+		var ritmoEnSegundos = this.timeToSeconds(pacePerKm);
+		var marcaEnSegundos = ritmoEnSegundos * distanciaEnKm;
+		var markTime = this.secondsToTime(marcaEnSegundos);
+		return markTime;
+	}
+
+	// Método para calcular la marca en millas
+	/**
+	* [markFromPacePerMile: calcula la marca esperada al recorrer la
+	distancia en millas al ritmo de carrera por milla realizado]
+	* @param {time} pacePerMile
+	* @param {imperial} distanceInImperial
+	* @return {time} [devuelve el tiempo/marca esperado]
+	*/
+	objeto.markFromPacePerMile = function(pacePerMile, distanceInImperial){
+		var distanciaEnMillas = this.imperialToMiles(distanceInImperial);
+		var ritmoEnSegundos = this.timeToSeconds(pacePerMile);
+		var marcaEnSegundos = ritmoEnSegundos * distanciaEnMillas;
+		var markTime = this.secondsToTime(marcaEnSegundos);
+		return markTime;
+	}
+
+	/**
+	* [tableTimeFromPacePerKm: calcula la marca esperada al recorrer la
+	distancia en metros al ritmo de carrera por kilometro cada
+	cutDistanceInMeters]
+	* @param {time} pacePerKm
+	* @param {number} distanceInMeters
+	* @param {number} cutDistanceInMeters
+	* @return {time} [devuelve un array de objetos con propiedades
+	distance=distanciaIntermedia mark=tiempo de paso en la distancia
+	intermedia]
+	*/
+	objeto.tableTimeFromPacePerKm = function(pacePerKm, distanceInMeters, cutDistanceInMeters){
+		var arrayMarcas = [];
+		// Genera una marca por cada punto de corte durante el recorrido a la distancia
+		for (var distanciaAcumulada=0; distanciaAcumulada<=distanceInMeters; distanciaAcumulada += cutDistanceInMeters){
+			var distance = distanciaAcumulada;
+			var mark = this.markFromPacePerKm(pacePerKm[0], distanciaAcumulada);
+			obj = {
+				distance: distance,
+				mark: mark
+			}
+			arrayMarcas.push(obj);
+		}
+		// Y genera una última marca con la posición final
+		var distance = distanceInMeters;
+		var mark = this.markFromPacePerKm(pacePerKm[0], distanceInMeters);
+		obj = {
+			distance: distance,
+			mark: mark
+		}
+		arrayMarcas.push(obj);
+		return arrayMarcas;
+	}
+
+	/**
+	* [tableTimeFromPacePerMile: calcula la marca esperada al recorrer
+	la distancia en millas al ritmo de carrera por milla cada
+	cutDistanceInYards]
+	* @param {time} pacePerMile
+	* @param {number} distanceInMiles
+	* @param {number} cutDistanceInYards
+	* @return {time} [devuelve un array de objetos con propiedades
+	distance=distanciaIntermediaImperial mark=tiempo de paso en la
+	distancia intermedia]
+	*/
+	objeto.tableTimeFromPacePerMile = function(pacePerMile, distanceInMiles, cutDistanceInYards){
+		var arrayMarcas = [];
+		var cutDistanceInMiles = this.imperialToMiles(this.yardsToImperial(cutDistanceInYards));
+		// Genera una marca por cada punto de corte durante el recorrido a la distancia
+		for (var distanciaAcumulada=0; distanciaAcumulada<=distanceInMiles; distanciaAcumulada += cutDistanceInMiles){
+			var distance = distanciaAcumulada;
+			var acumuladaImperial = this.milesToImperial(distanciaAcumulada);
+			var mark = this.markFromPacePerMile(pacePerMile[1], acumuladaImperial);
+			obj = {
+				distance: this.milesToImperial(distance),
+				mark: mark
+			}
+			arrayMarcas.push(obj);
+		}
+		// Y genera una última marca con la posición final
+		var distance = this.milesToImperial(distance);
+		var mark = this.markFromPacePerMile(pacePerMile[1], distance);
+		obj = {
+			distance: distance,
+			mark: mark
+		}
+		arrayMarcas.push(obj);
+		return arrayMarcas;
+
+	}
+
 	// Aquí retorna el objeto
 	return objeto;
 })(Calculator || {});
