@@ -18,14 +18,177 @@ var Calculator = (function(objeto){
 	// Método público show()
 	objeto.show = function(){
 		// CREO LOS ELEMENTOS:
-		// contenedor
+		// ||| CONTENEDOR |||
 		var interfaz = document.createElement('div');
 		// titulo
 		var titulo = document.createElement('h1');
-		titulo.appendChild(document.createTextNode('Calculadora de ritmos de paso'));
+		titulo.appendChild(document.createTextNode('Calculadora de carreras'));
+		// ||| SECCIÓN RITMO |||
+		var seccionRitmo = document.createElement('div');
+		var tituloSeccionRitmo = document.createElement('h3');
+		tituloSeccionRitmo.appendChild(document.createTextNode('Calcular el ritmo por km o milla:'));
+		// - distancia
+		var labelCampoDistanciaRitmo = document.createElement('label');
+		labelCampoDistanciaRitmo.setAttribute('for', 'campoDistanciaRitmo');
+		labelCampoDistanciaRitmo.appendChild(document.createTextNode('Distancia: '));
+		var campoDistanciaRitmo = document.createElement('input');
+		campoDistanciaRitmo.setAttribute('name', campoDistanciaRitmo);
+		campoDistanciaRitmo.setAttribute('type', 'number');
+		campoDistanciaRitmo.setAttribute('style', 'max-width: 6rem;');
+		var selectorTipoDistanciaRitmo = document.createElement('select');
+		var optSelectorTipoDistanciaRitmoKm = document.createElement('option');
+		optSelectorTipoDistanciaRitmoKm.setAttribute('value', 'Km');
+		optSelectorTipoDistanciaRitmoKm.appendChild(document.createTextNode('Kilómetros'));
+		var optSelectorTipoDistanciaRitmoMi = document.createElement('option');
+		optSelectorTipoDistanciaRitmoMi.setAttribute('value', 'Millas');
+		optSelectorTipoDistanciaRitmoMi.appendChild(document.createTextNode('Millas'));
+		selectorTipoDistanciaRitmo.appendChild(optSelectorTipoDistanciaRitmoKm);
+		selectorTipoDistanciaRitmo.appendChild(optSelectorTipoDistanciaRitmoMi);
+		// - tiempo
+		var labelCampoTiempoRitmo = document.createElement('label');
+		labelCampoTiempoRitmo.appendChild(document.createTextNode('Tiempo: '));
+		var campoHoraTiempoRitmo = document.createElement('input');
+		campoHoraTiempoRitmo.setAttribute('type', 'number');
+		campoHoraTiempoRitmo.setAttribute('size', '2');
+		campoHoraTiempoRitmo.setAttribute('min', '0');
+		campoHoraTiempoRitmo.setAttribute('max', '99');
+		campoHoraTiempoRitmo.setAttribute('placeholder', 'hh');
+		campoHoraTiempoRitmo.setAttribute('style', 'max-width: 2rem;');
+		var campoMinutoTiempoRitmo = document.createElement('input');
+		campoMinutoTiempoRitmo.setAttribute('type', 'number');
+		campoMinutoTiempoRitmo.setAttribute('size', '2');
+		campoMinutoTiempoRitmo.setAttribute('maxlength', '2');
+		campoMinutoTiempoRitmo.setAttribute('min', '0');
+		campoMinutoTiempoRitmo.setAttribute('max', '59');
+		campoMinutoTiempoRitmo.setAttribute('placeholder', 'mm');
+		campoMinutoTiempoRitmo.setAttribute('style', 'max-width: 2rem;');
+		var campoSegundoTiempoRitmo = document.createElement('input');
+		campoSegundoTiempoRitmo.setAttribute('type', 'number');
+		campoSegundoTiempoRitmo.setAttribute('size', '2');
+		campoSegundoTiempoRitmo.setAttribute('maxlength', '2');
+		campoSegundoTiempoRitmo.setAttribute('min', '0');
+		campoSegundoTiempoRitmo.setAttribute('max', '59');
+		campoSegundoTiempoRitmo.setAttribute('placeholder', 'ss');
+		campoSegundoTiempoRitmo.setAttribute('style', 'max-width: 2rem;');
+		// - submit
+		var btCalcularRitmo = document.createElement('button');
+		btCalcularRitmo.setAttribute('type', 'button');
+		btCalcularRitmo.appendChild(document.createTextNode('Calcular ritmo'));
+		// -  resultado
+		var resultadoRitmo = document.createElement('div');
+		var etiquetaResultadoRitmo = document.createElement('span');
+		var textoEtiquetaResultadoRitmo = document.createTextNode('Tu ritmo por kilómetro: ');
+		etiquetaResultadoRitmo.appendChild(textoEtiquetaResultadoRitmo);
+		resultadoRitmo.appendChild(etiquetaResultadoRitmo);
+		// - Añado los elementos a la seccionRitmo
+		seccionRitmo.appendChild(tituloSeccionRitmo);
+		//-
+		seccionRitmo.appendChild(labelCampoDistanciaRitmo);
+		seccionRitmo.appendChild(campoDistanciaRitmo);
+		seccionRitmo.appendChild(document.createTextNode(' ')); // &nbsp;
+		seccionRitmo.appendChild(selectorTipoDistanciaRitmo);
+		seccionRitmo.appendChild(document.createElement('br'));
+		// -
+		seccionRitmo.appendChild(labelCampoTiempoRitmo);
+		seccionRitmo.appendChild(campoHoraTiempoRitmo);
+		seccionRitmo.appendChild(document.createTextNode(':'));
+		seccionRitmo.appendChild(campoMinutoTiempoRitmo);
+		seccionRitmo.appendChild(document.createTextNode(':'));
+		seccionRitmo.appendChild(campoSegundoTiempoRitmo);
+		seccionRitmo.appendChild(document.createElement('br'));
+		// -
+		seccionRitmo.appendChild(btCalcularRitmo);
+		// - 
+		seccionRitmo.appendChild(resultadoRitmo);
+		
+
+		// ||| SECCIÓN TIEMPOS |||
+		var seccionTiempos = document.createElement('div');
+		var tituloSeccionTiempos = document.createElement('h3');
+		tituloSeccionTiempos.appendChild(document.createTextNode('Calcular tiempos:'));
+		// - distancia total
+		var labelCampoDistanciaTotalTiempos = document.createElement('label');
+		labelCampoDistanciaTotalTiempos.appendChild(document.createTextNode('Distancia total: '));
+		var campoDistanciaTotalTiempos = document.createElement('input');
+		campoDistanciaTotalTiempos.setAttribute('type', 'number');
+		campoDistanciaTotalTiempos.setAttribute('name', campoDistanciaTotalTiempos);
+		campoDistanciaTotalTiempos.setAttribute('style', 'max-width: 6rem;');
+		var selectorTipoDistanciaTiempos = document.createElement('select');
+		var optselectorTipoDistanciaTiemposKm = document.createElement('option');
+		optselectorTipoDistanciaTiemposKm.setAttribute('value', 'Km');
+		optselectorTipoDistanciaTiemposKm.appendChild(document.createTextNode('Kilómetros'));
+		var optselectorTipoDistanciaTiemposMi = document.createElement('option');
+		optselectorTipoDistanciaTiemposMi.setAttribute('value', 'Millas');
+		optselectorTipoDistanciaTiemposMi.appendChild(document.createTextNode('Millas'));
+		selectorTipoDistanciaTiempos.appendChild(optselectorTipoDistanciaTiemposKm);
+		selectorTipoDistanciaTiempos.appendChild(optselectorTipoDistanciaTiemposMi);
+		// - ritmo
+		var labelCampoRitmoTiempos = document.createElement('label');
+		labelCampoRitmoTiemposTexto = document.createTextNode('Tu ritmo por kilómetro: ');
+		labelCampoRitmoTiempos.appendChild(labelCampoRitmoTiemposTexto);
+		var campoHoraRitmoTiempos = document.createElement('input');
+		campoHoraRitmoTiempos.setAttribute('type', 'number');
+		campoHoraRitmoTiempos.setAttribute('size', '2');
+		campoHoraRitmoTiempos.setAttribute('min', '0');
+		campoHoraRitmoTiempos.setAttribute('max', '99');
+		campoHoraRitmoTiempos.setAttribute('placeholder', 'hh');
+		campoHoraRitmoTiempos.setAttribute('style', 'max-width: 2rem;');
+		var campoMinutoRitmoTiempos = document.createElement('input');
+		campoMinutoRitmoTiempos.setAttribute('type', 'number');
+		campoMinutoRitmoTiempos.setAttribute('size', '2');
+		campoMinutoRitmoTiempos.setAttribute('min', '0');
+		campoMinutoRitmoTiempos.setAttribute('max', '59');
+		campoMinutoRitmoTiempos.setAttribute('placeholder', 'mm');
+		campoMinutoRitmoTiempos.setAttribute('style', 'max-width: 2rem;');
+		var campoSegundoRitmoTiempos = document.createElement('input');
+		campoSegundoRitmoTiempos.setAttribute('type', 'number');
+		campoSegundoRitmoTiempos.setAttribute('size', '2');
+		campoSegundoRitmoTiempos.setAttribute('min', '0');
+		campoSegundoRitmoTiempos.setAttribute('max', '59');
+		campoSegundoRitmoTiempos.setAttribute('placeholder', 'ss');
+		campoSegundoRitmoTiempos.setAttribute('style', 'max-width: 2rem;');
+		// - distancia corte
+		var labelCampoCorteTiempos = document.createElement('label');
+		var labelCampoCorteTiemposTexto = document.createTextNode('Distancia de corte en metros: ');
+		labelCampoCorteTiempos.appendChild(labelCampoCorteTiemposTexto);
+		var campoCorteTiempos = document.createElement('input');
+		campoCorteTiempos.setAttribute('style', 'max-width: 6rem;');
+		campoCorteTiempos.setAttribute('type', 'number');
+		// - submit
+		var btCalcularTiempos = document.createElement('button');
+		btCalcularTiempos.setAttribute('type', 'button');
+		btCalcularTiempos.appendChild(document.createTextNode('Calcular tiempos'));
+		// - resultado
+		var resultadoTiempos = document.createElement('div');
+
+		// - > Añado los elementos a la seccionTiempos
+		seccionTiempos.appendChild(tituloSeccionTiempos);
+		seccionTiempos.appendChild(labelCampoDistanciaTotalTiempos);
+		seccionTiempos.appendChild(campoDistanciaTotalTiempos);
+		seccionTiempos.appendChild(document.createTextNode(" "));
+		seccionTiempos.appendChild(selectorTipoDistanciaTiempos);
+		seccionTiempos.appendChild(document.createElement('br'));
+		// -
+		seccionTiempos.appendChild(labelCampoRitmoTiempos);
+		seccionTiempos.appendChild(campoHoraRitmoTiempos);
+		seccionTiempos.appendChild(document.createTextNode(':'));
+		seccionTiempos.appendChild(campoMinutoRitmoTiempos);
+		seccionTiempos.appendChild(document.createTextNode(':'));
+		seccionTiempos.appendChild(campoSegundoRitmoTiempos);
+		seccionTiempos.appendChild(document.createElement('br'));
+		// -
+		seccionTiempos.appendChild(labelCampoCorteTiempos);
+		seccionTiempos.appendChild(campoCorteTiempos);
+		seccionTiempos.appendChild(document.createElement('br'));
+		// -
+		seccionTiempos.appendChild(btCalcularTiempos);
+		// -
+		seccionTiempos.appendChild(resultadoTiempos);
+
 		// INSERTO LOS ELEMENTOS EN EL ELEMENTO PRINCIPAL 'INTERFAZ'
 		interfaz.appendChild(titulo);
-		
+		interfaz.appendChild(seccionRitmo);
+		interfaz.appendChild(seccionTiempos);
 		// RETORNO EL ELEMENTO INTERFAZ COMPLETO
 		return interfaz;
 	}
